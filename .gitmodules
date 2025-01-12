@@ -1,9 +1,9 @@
-[submodule "thirdparty/Detours"]
-	path = thirdparty/Detours
-	url = https://github.com/microsoft/Detours.git
 [submodule "thirdparty/spdlog"]
 	path = thirdparty/spdlog
 	url = https://github.com/gabime/spdlog.git
 [submodule "thirdparty/imgui"]
 	path = thirdparty/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "thirdparty/Detours"]
+	path = thirdparty/Detours
+	url = https://github.com/WinDurango/Detours.git
