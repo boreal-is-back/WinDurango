@@ -6,10 +6,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="WinDurangoConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h" />
     <ClInclude Include="toml.hpp" />
     <ClInclude Include="logfmtxx.hpp" />
+    <ClInclude Include="WinDurangoConfig.h" />
   </ItemGroup>
 </Project>

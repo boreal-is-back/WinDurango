@@ -25,7 +25,7 @@ namespace winrt::Windows::Xbox::System::implementation
 {
     hstring UserDisplayInfo::Gamertag()
     {
-        return winrt::to_hstring("durangler");
+        return winrt::to_hstring(/*Config::ingameName*/"The Durangler");
     }
     uint32_t UserDisplayInfo::GamerScore()
     {
@@ -37,7 +37,7 @@ namespace winrt::Windows::Xbox::System::implementation
     }
     hstring UserDisplayInfo::GameDisplayName()
     {
-        return winrt::to_hstring("durangler");
+        return winrt::to_hstring(/*Config::ingameName*/"The Durangler");
     }
     int32_t UserDisplayInfo::Reputation()
     {
