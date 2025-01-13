@@ -4,6 +4,8 @@
 #include <strsafe.h>
 #include <winrt/Windows.Storage.Streams.h>
 #include <winrt/Windows.ApplicationModel.h>
+#include <winrt/Windows.Storage.h>
+#include <winrt/Windows.Foundation.Collections.h>
 #include <robuffer.h>
 
 winrt::Windows::Foundation::IAsyncAction WinDurango::impl::ConnectedStorage::CreateContainer(winrt::hstring name) const
@@ -32,6 +34,7 @@ winrt::Windows::Foundation::IAsyncAction WinDurango::impl::ConnectedStorage::Rea
     for (auto const& pair : data)
     {
         auto fileName = pair.Key();
+        printf("FileName -> %ls | folder -> %ls\n", fileName.c_str(), folder.Path().c_str());
         auto file = co_await folder.GetFileAsync(fileName);
         auto fileBuffer = co_await winrt::Windows::Storage::FileIO::ReadBufferAsync(file);
         auto bufferByteAccess = fileBuffer.as<Windows::Storage::Streams::IBufferByteAccess>();

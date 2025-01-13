@@ -48,8 +48,7 @@ namespace winrt::Windows::Xbox::Storage::implementation
     {
         winrt::Windows::Foundation::Collections::IVector<winrt::Windows::Xbox::Storage::ContainerInfo2> containerInfoVector = winrt::single_threaded_vector<winrt::Windows::Xbox::Storage::ContainerInfo2>( );
 
-        hstring storagePath;
-        co_await WinDurango::impl::ConnectedStorage::CreateDirectories(L"UserStorage", storagePath);
+        hstring storagePath = winrt::Windows::Storage::ApplicationData::Current( ).LocalFolder( ).Path( ) + L"\\WinDurango\\UserStorage";
         auto storageFolder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(storagePath);
         auto folders = co_await storageFolder.GetFoldersAsync();
 

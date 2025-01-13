@@ -95,12 +95,20 @@ namespace winrt::Windows::Xbox::Storage::implementation
 		if (WinDurango::impl::s_userStorage == nullptr)
 			assert("s_userStorage is null");
 
-        if (staticContainer == Storage::ConnectedStorageContainer(nullptr))
-            staticContainer = winrt::make<ConnectedStorageContainer>( containerName );
+        if (containers == nullptr)
+            containers = winrt::single_threaded_map<hstring, winrt::Windows::Xbox::Storage::ConnectedStorageContainer>( );
 
-		WinDurango::impl::h_DesiredContainerName = containerName;
-		SetEvent(WinDurango::impl::h_ContainerWriteEvent);
-		return staticContainer;
+        if (!containers.HasKey(containerName)) {
+            winrt::Windows::Xbox::Storage::ConnectedStorageContainer container = winrt::make<ConnectedStorageContainer>(containerName);
+
+            containers.Insert(containerName, container);
+
+            SetEvent(WinDurango::impl::h_ContainerWriteEvent);
+            return container;
+        }
+        else {
+            return containers.Lookup(containerName);
+        }
     }
 
     winrt::Windows::Foundation::IAsyncAction ConnectedStorageSpace::DeleteContainerAsync(hstring containerName)
