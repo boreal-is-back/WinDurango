@@ -66,5 +66,5 @@ void WinDurango::Overlay::Present() const
 	//m_pContext->ClearRenderTargetView(m_pRenderTargetView, clear_color_with_alpha);
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData( ));
 
-	m_pSwapchain->Present(1, 0);
+	//m_pSwapchain->Present(1, 0);
 }

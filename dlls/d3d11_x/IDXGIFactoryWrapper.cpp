@@ -126,15 +126,6 @@ namespace d3d11x
 		IDXGISwapChain1* swap = nullptr;
 		HRESULT hr;
 		pDesc->Flags &= DXGI_SWAPCHAIN_FLAG_MASK;
-		pDesc->Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-		pDesc->Stereo = false;
-		pDesc->SampleDesc.Count = 1;
-		pDesc->SampleDesc.Quality = 0;
-		pDesc->BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-		pDesc->BufferCount = 2;
-		pDesc->SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
-		pDesc->Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-		pDesc->AlphaMode = DXGI_ALPHA_MODE_IGNORE;
 
 		if (pWindow == nullptr)
 		{
