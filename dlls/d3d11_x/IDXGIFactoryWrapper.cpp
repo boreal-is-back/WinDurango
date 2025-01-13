@@ -3,6 +3,7 @@
 #include "ID3DWrappers.h"
 #include <windows.ui.core.h>
 #include "../kernelx/CoreWindowWrapperX.h"
+#include "overlay/overlay.h"
 
 #define DXGI_SWAPCHAIN_FLAG_MASK DXGI_SWAP_CHAIN_FLAG_NONPREROTATED | DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH | DXGI_SWAP_CHAIN_FLAG_GDI_COMPATIBLE \
 		| DXGI_SWAP_CHAIN_FLAG_RESTRICTED_CONTENT | DXGI_SWAP_CHAIN_FLAG_RESTRICT_SHARED_RESOURCE_DRIVER | DXGI_SWAP_CHAIN_FLAG_DISPLAY_ONLY | DXGI_SWAP_CHAIN_FLAG_FRAME_LATENCY_WAITABLE_OBJECT \
@@ -123,8 +124,17 @@ namespace d3d11x
 	HRESULT __stdcall IDXGIFactoryWrapper::CreateSwapChainForCoreWindow(IGraphicsUnknown* pDevice, IUnknown* pWindow, DXGI_SWAP_CHAIN_DESC1* pDesc, IDXGIOutput* pRestrictToOutput, IDXGISwapChain1_X** ppSwapChain)
 	{
 		IDXGISwapChain1* swap = nullptr;
-
+		HRESULT hr;
 		pDesc->Flags &= DXGI_SWAPCHAIN_FLAG_MASK;
+		pDesc->Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		pDesc->Stereo = false;
+		pDesc->SampleDesc.Count = 1;
+		pDesc->SampleDesc.Quality = 0;
+		pDesc->BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+		pDesc->BufferCount = 2;
+		pDesc->SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+		pDesc->Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+		pDesc->AlphaMode = DXGI_ALPHA_MODE_IGNORE;
 
 		if (pWindow == nullptr)
 		{
@@ -136,15 +146,29 @@ namespace d3d11x
 
 			pWindow = coreWindow.Get( );
 
-			HRESULT hr = m_realFactory->CreateSwapChainForCoreWindow(reinterpret_cast<IUnknown*>(pDevice), pWindow, pDesc, pRestrictToOutput, &swap);
+			hr = m_realFactory->CreateSwapChainForCoreWindow(reinterpret_cast<IUnknown*>(pDevice), pWindow, pDesc, pRestrictToOutput, &swap);
 
 			*ppSwapChain = new IDXGISwapChainWrapper(swap);
-			return hr;
+		}
+		else
+		{
+			hr = m_realFactory->CreateSwapChainForCoreWindow(reinterpret_cast<IUnknown*>(pDevice), reinterpret_cast<CoreWindowWrapperX*>(pWindow)->m_realWindow, pDesc, pRestrictToOutput, &swap);
+			*ppSwapChain = new IDXGISwapChainWrapper(swap);
 		}
 
-		HRESULT hr = m_realFactory->CreateSwapChainForCoreWindow(reinterpret_cast<IUnknown*>(pDevice), reinterpret_cast<CoreWindowWrapperX*>(pWindow)->m_realWindow, pDesc, pRestrictToOutput, &swap);
+		if (WinDurango::g_Overlay == nullptr)
+		{
+			::ID3D11Device2* device;
+			pDevice->QueryInterface(__uuidof(ID3D11Device), reinterpret_cast<void**>(&device));
+			device = reinterpret_cast<d3d11x::D3D11DeviceXWrapperX*>(device)->m_realDevice;
 
-		*ppSwapChain = new IDXGISwapChainWrapper(swap);
+			::ID3D11DeviceContext* ctx{};
+			device->GetImmediateContext(&ctx);
+
+			WinDurango::g_Overlay = new WinDurango::Overlay(device, ctx, reinterpret_cast<IDXGISwapChainWrapper*>(*ppSwapChain)->m_realSwapchain);
+			WinDurango::g_Overlay->Initialize( );
+		}
+
 		return hr;
 	}
 

@@ -6,6 +6,7 @@
 
 #include "d3d_x/d3d_x.hpp"
 #include "ID3DWrappers.h"
+#include "overlay/overlay.h"
 
 HRESULT _stdcall D3DQuerySEQCounters_X(D3D_SEQ_COUNTER_DATA* pData)
 {
@@ -208,7 +209,7 @@ HRESULT __stdcall D3D11XCreateDeviceX_X(
 
     auto flags = pParameters->Flags & CREATE_DEVICE_FLAG_MASK;
 #ifdef _DEBUG
-    flags |= D3D11_CREATE_DEVICE_DEBUG;
+    //flags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
     HRESULT hr = D3D11CreateDevice(NULL, D3D_DRIVER_TYPE_HARDWARE, 0, flags, featurelevels, _ARRAYSIZE(featurelevels), D3D11_SDK_VERSION, reinterpret_cast<ID3D11Device**>(ppDevice), NULL, reinterpret_cast<ID3D11DeviceContext**>(ppImmediateContext));

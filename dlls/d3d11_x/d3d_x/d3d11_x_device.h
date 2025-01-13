@@ -807,7 +807,7 @@ namespace d3d11x
 		HRESULT SetGpuMemoryPriority(UINT) override;
 		void GetGpuHardwareConfiguration(D3D11X_GPU_HARDWARE_CONFIGURATION*) override;
 
-	private:
+	public:
 		::ID3D11Device2* m_realDevice;
 	};
 }

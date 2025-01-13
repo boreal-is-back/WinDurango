@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include <mmreg.h>
+
 HRESULT MFCreateDxvaSampleRendererX_X(void* pDevice, void* pAttribute, void** pObject)
 {
 	return E_NOTIMPL;
@@ -53,5 +55,14 @@ HRESULT __fastcall MFCreateNV12ToRGB32ConverterX_X(void*, void*, void*)
 }
 
 HRESULT(MFCreateWaveFormatExFromMFMediaType_X)(void* pMFType, void** ppWF, UINT32* pcbSize, UINT32 Flags) {
+	return E_NOTIMPL;
+}
+
+HRESULT MFInitMediaTypeFromWaveFormatEx_X(
+         void* pMFType,
+         const WAVEFORMATEX* pWaveFormat,
+         UINT32 cbBufSize
+)
+{
 	return E_NOTIMPL;
 }

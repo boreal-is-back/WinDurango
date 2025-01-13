@@ -5,7 +5,7 @@
 #include <Windows.h>
 
 // note from unixian: i used this since using appxlauncher requires me attaching to the game after it launches
-#define WINDURANGO_WAIT_FOR_DEBUGGER 0
+#define WINDURANGO_WAIT_FOR_DEBUGGER 1
 
 //Rodrigo Todescatto: For debbuging Forza.
 #define RETURN_IF_FAILED(hr) if (FAILED(hr)) return hr
@@ -23,7 +23,7 @@ inline HRESULT WINAPI GetActivationFactoryRedirect(PCWSTR str, REFIID riid, void
 	if (FAILED(hr = WindowsCreateStringReference(str, wcslen(str), &classNameHeader, &className)))
 		return hr;
 
-	printf("GetActivationFactoryRedirect: %S\n", str);
+	//printf("GetActivationFactoryRedirect: %S\n", str);
 
 	hr = RoGetActivationFactory_Hook(className, riid, ppFactory);
 	WindowsDeleteString(className);

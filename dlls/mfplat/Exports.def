@@ -9,3 +9,4 @@ MFStartup = MFStartup_X @125
 MFShutdown = MFShutdown_X @126
 MFCreateNV12ToRGB32ConverterX = MFCreateNV12ToRGB32ConverterX_X @128
 MFCreateWaveFormatExFromMFMediaType = MFCreateWaveFormatExFromMFMediaType_X @129
+MFInitMediaTypeFromWaveFormatEx = MFInitMediaTypeFromWaveFormatEx_X @130

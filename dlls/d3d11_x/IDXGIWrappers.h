@@ -316,7 +316,7 @@ namespace d3d11x
 
 
 
-    private:
+    public:
         IDXGISwapChain1* m_realSwapchain;
     };
 

@@ -45,9 +45,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>d3d11_x</TargetName>
+    <IncludePath>$(SolutionDir)thirdparty\imgui;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>d3d11_x</TargetName>
+    <IncludePath>$(SolutionDir)thirdparty\imgui;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -89,6 +91,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\thirdparty\imgui\backends\imgui_impl_dx11.h" />
+    <ClInclude Include="..\..\thirdparty\imgui\imconfig.h" />
+    <ClInclude Include="..\..\thirdparty\imgui\imgui.h" />
+    <ClInclude Include="..\..\thirdparty\imgui\imgui_internal.h" />
+    <ClInclude Include="..\..\thirdparty\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\..\thirdparty\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\..\thirdparty\imgui\imstb_truetype.h" />
+    <ClInclude Include="..\..\thirdparty\imgui_impl_uwp.h" />
     <ClInclude Include="d3d11_x.h" />
     <ClInclude Include="d3d_x\d3d11_x_device.h" />
     <ClInclude Include="d3d_x\d3d_x.hpp" />
@@ -98,9 +108,38 @@
     <ClInclude Include="ID3DWrappers.h" />
     <ClInclude Include="ID3DX.h" />
     <ClInclude Include="IDXGIWrappers.h" />
+    <ClInclude Include="overlay\overlay.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\thirdparty\imgui\backends\imgui_impl_dx11.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\thirdparty\imgui\imgui.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\thirdparty\imgui\imgui_demo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\thirdparty\imgui\imgui_draw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\thirdparty\imgui\imgui_tables.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\thirdparty\imgui\imgui_widgets.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\thirdparty\imgui_impl_uwp.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="d3d11_x.cpp" />
     <ClCompile Include="d3d_x\d3d11_x_device.cpp" />
     <ClCompile Include="dllmain.cpp" />
@@ -113,6 +152,7 @@
     <ClCompile Include="IDXGIDeviceWrapper.cpp" />
     <ClCompile Include="IDXGIFactoryWrapper.cpp" />
     <ClCompile Include="IDXGISwapChainWrapper.cpp" />
+    <ClCompile Include="overlay\overlay.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

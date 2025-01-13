@@ -5,6 +5,7 @@
 
 #include "IDXGIWrappers.h"
 #include "ID3DWrappers.h"
+#include "overlay/overlay.h"
 
 namespace d3d11x
 {
@@ -93,6 +94,7 @@ namespace d3d11x
 
     HRESULT __stdcall IDXGISwapChainWrapper::Present(UINT SyncInterval, UINT Flags)
     {
+        WinDurango::g_Overlay->Present( );
         return m_realSwapchain->Present(SyncInterval, Flags);
     }
 
@@ -173,8 +175,10 @@ namespace d3d11x
 
     HRESULT __stdcall IDXGISwapChainWrapper::Present1(UINT SyncInterval, UINT PresentFlags, const DXGI_PRESENT_PARAMETERS* pPresentParameters)
     {
+		WinDurango::g_Overlay->Present( );
+
         if (pPresentParameters == nullptr) {
-            fps60.sleep( );
+            //fps60.sleep( );
             return m_realSwapchain->Present(SyncInterval, PresentFlags);
         }
 
