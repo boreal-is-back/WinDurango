@@ -127,7 +127,7 @@ HRESULT CoreApplicationWrapperX::QueryInterface(const IID& riid, void** ppvObjec
 		WideCharToMultiByte(CP_UTF8, 0, iidwstr, -1, iidstr, sizeof(iidstr), nullptr, nullptr);
 		MessageBoxA(nullptr, iidstr, typeid(*this).name(), MB_OK);
 	}
-
+	
 	*ppvObject = nullptr;
 	return E_NOINTERFACE;
 }

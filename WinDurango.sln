@@ -45,17 +45,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XAudio2_9_x", "dlls\XAudio2
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Detours", "thirdparty\Detours\vc\Detours.vcxproj", "{37489709-8054-4903-9C49-A79846049FC9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "imgui", "imgui", "{EEA5001B-6451-4AA8-8475-443003893536}"
-	ProjectSection(SolutionItems) = preProject
-		thirdparty\imgui\imconfig.h = thirdparty\imgui\imconfig.h
-		thirdparty\imgui\imgui.cpp = thirdparty\imgui\imgui.cpp
-		thirdparty\imgui\imgui.h = thirdparty\imgui\imgui.h
-		thirdparty\imgui\backends\imgui_impl_dx11.cpp = thirdparty\imgui\backends\imgui_impl_dx11.cpp
-		thirdparty\imgui\backends\imgui_impl_dx11.h = thirdparty\imgui\backends\imgui_impl_dx11.h
-		thirdparty\imgui\backends\imgui_impl_dx12.cpp = thirdparty\imgui\backends\imgui_impl_dx12.cpp
-		thirdparty\imgui\backends\imgui_impl_dx12.h = thirdparty\imgui\backends\imgui_impl_dx12.h
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -576,7 +565,6 @@ Global
 		{4A5072B4-8304-4CC4-88C1-CF875110FF47} = {BF759166-26A8-4B46-8423-8091158F2EA5}
 		{0C02E6B1-4532-4194-8891-11DDC164C0A8} = {BF759166-26A8-4B46-8423-8091158F2EA5}
 		{37489709-8054-4903-9C49-A79846049FC9} = {243DBE8A-7A46-42B5-9FEC-A8E7CB67CE81}
-		{EEA5001B-6451-4AA8-8475-443003893536} = {243DBE8A-7A46-42B5-9FEC-A8E7CB67CE81}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30EA489C-CFA4-4816-BE12-8BCE129039C5}

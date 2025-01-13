@@ -454,6 +454,12 @@
     <ClInclude Include="Implementation\Windows.Xbox.System.Launcher.h" />
     <ClInclude Include="Implementation\Windows.Xbox.System.User.h" />
     <ClInclude Include="Implementation\Windows.Xbox.System.UserDisplayInfo.h" />
+    <ClInclude Include="Implementation\Windows.Xbox.UI.Accessibility.h" />
+    <ClInclude Include="Implementation\Windows.Xbox.UI.AccountPickerResult.h" />
+    <ClInclude Include="Implementation\Windows.Xbox.UI.AddRemoveFriendResult.h" />
+    <ClInclude Include="Implementation\Windows.Xbox.UI.KeyboardOptions.h" />
+    <ClInclude Include="Implementation\Windows.Xbox.UI.SystemUI.h" />
+    <ClInclude Include="Implementation\Windows.Xbox.UI.WebAuthenticationResult.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -776,6 +782,12 @@
     <ClCompile Include="Implementation\Windows.Xbox.System.Launcher.cpp" />
     <ClCompile Include="Implementation\Windows.Xbox.System.User.cpp" />
     <ClCompile Include="Implementation\Windows.Xbox.System.UserDisplayInfo.cpp" />
+    <ClCompile Include="Implementation\Windows.Xbox.UI.Accessibility.cpp" />
+    <ClCompile Include="Implementation\Windows.Xbox.UI.AccountPickerResult.cpp" />
+    <ClCompile Include="Implementation\Windows.Xbox.UI.AddRemoveFriendResult.cpp" />
+    <ClCompile Include="Implementation\Windows.Xbox.UI.KeyboardOptions.cpp" />
+    <ClCompile Include="Implementation\Windows.Xbox.UI.SystemUI.cpp" />
+    <ClCompile Include="Implementation\Windows.Xbox.UI.WebAuthenticationResult.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -831,6 +843,7 @@
     <Midl Include="External\Windows.Xbox.Storage.idl" />
     <Midl Include="External\Windows.Xbox.System.idl" />
     <Midl Include="External\Windows.Xbox.Achievements.idl" />
+    <Midl Include="External\Windows.Xbox.UI.idl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

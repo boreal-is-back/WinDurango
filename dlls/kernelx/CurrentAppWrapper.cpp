@@ -1,6 +1,99 @@
 #include "pch.h"
 #include "CurrentAppWrapper.hpp"
 
+HRESULT LicenseInformationWrapperX::QueryInterface(const IID& riid, void** ppvObject)
+{
+	if (riid == __uuidof(ILicenseInformationX))
+	{
+		*ppvObject = reinterpret_cast<ICurrentAppX*>(this);
+		AddRef();
+		return S_OK;
+	}
+
+	HRESULT hr = m_realLicenseInformation->QueryInterface(riid, ppvObject);
+	if (FAILED(hr))
+	{
+		char iidstr[sizeof("{AAAAAAAA-BBBB-CCCC-DDEE-FFGGHHIIJJKK}")];
+		OLECHAR iidwstr[sizeof(iidstr)];
+		StringFromGUID2(riid, iidwstr, ARRAYSIZE(iidwstr));
+		WideCharToMultiByte(CP_UTF8, 0, iidwstr, -1, iidstr, sizeof(iidstr), nullptr, nullptr);
+		printf("[CurrentAppWrapperX] Interface Not Implemented: %s\n", iidstr);
+	}
+
+	*ppvObject = nullptr;
+	return E_NOINTERFACE;
+}
+
+ULONG LicenseInformationWrapperX::AddRef()
+{
+	return InterlockedIncrement(&m_RefCount);
+}
+
+ULONG LicenseInformationWrapperX::Release()
+{
+	ULONG refCount = InterlockedDecrement(&m_RefCount);
+	if (refCount == 0)
+	{
+		m_realLicenseInformation->Release();
+		delete this;
+	}
+	return refCount;
+}
+
+HRESULT LicenseInformationWrapperX::GetIids(ULONG* iidCount, IID** iids)
+{
+	return m_realLicenseInformation->GetIids(iidCount, iids);
+}
+
+HRESULT LicenseInformationWrapperX::GetRuntimeClassName(HSTRING* className)
+{
+	return m_realLicenseInformation->GetRuntimeClassName(className);
+}
+
+HRESULT LicenseInformationWrapperX::GetTrustLevel(TrustLevel* trustLevel)
+{
+	return m_realLicenseInformation->GetTrustLevel(trustLevel);
+}
+
+HRESULT LicenseInformationWrapperX::get_ProductLicenses(
+	ABI::Windows::Foundation::Collections::__FIMapView_2_HSTRING_Windows__CApplicationModel__CStore__CProductLicense_t**
+	value)
+{
+	printf("[LicenseInformationWrapperX] get_ProductLicenses\n");
+	return E_NOTIMPL;
+}
+
+HRESULT LicenseInformationWrapperX::get_IsActive(boolean* value)
+{
+	printf("[LicenseInformationWrapperX] get_IsActive\n");
+	return E_NOTIMPL;
+}
+
+HRESULT LicenseInformationWrapperX::get_IsTrial(boolean* value)
+{
+	printf("[LicenseInformationWrapperX] get_IsTrial\n");
+	return E_NOTIMPL;
+}
+
+HRESULT LicenseInformationWrapperX::get_ExpirationDate(ABI::Windows::Foundation::DateTime* value)
+{
+	printf("[LicenseInformationWrapperX] get_ExpirationDate\n");
+	return E_NOTIMPL;
+}
+
+HRESULT LicenseInformationWrapperX::add_LicenseChanged(
+	ABI::Windows::ApplicationModel::Store::ILicenseChangedEventHandler* handler, EventRegistrationToken* cookie)
+{
+	printf("[LicenseInformationWrapperX] add_LicenseChanged\n");
+	return E_NOTIMPL;
+}
+
+HRESULT LicenseInformationWrapperX::remove_LicenseChanged(EventRegistrationToken cookie)
+{
+	printf("[LicenseInformationWrapperX] remove_LicenseChanged\n");
+	return E_NOTIMPL;
+}
+
 HRESULT __stdcall CurrentAppWrapperX::QueryInterface(REFIID riid, void** ppvObject)
 {
 	if (riid == __uuidof(ICurrentAppX))

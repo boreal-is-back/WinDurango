@@ -97,6 +97,53 @@ public:
 //	) override;
 //};
 
+class LicenseInformationWrapperX : public ILicenseInformationX
+{
+public:
+	LicenseInformationWrapperX(ABI::Windows::ApplicationModel::Store::ILicenseInformation* realLicenseInformation)
+		: m_realLicenseInformation(realLicenseInformation)
+	{
+		m_RefCount++;
+	}
+
+	HRESULT QueryInterface(REFIID riid, void** ppvObject) override;
+	ULONG AddRef() override;
+	ULONG Release() override;
+
+	HRESULT GetIids(ULONG* iidCount, IID** iids) override;
+	HRESULT GetRuntimeClassName(HSTRING* className) override;
+	HRESULT GetTrustLevel(TrustLevel* trustLevel) override;
+
+	HRESULT STDMETHODCALLTYPE get_ProductLicenses(
+		__FIMapView_2_HSTRING_Windows__CApplicationModel__CStore__CProductLicense** value
+	) override;
+
+	HRESULT STDMETHODCALLTYPE get_IsActive(
+		boolean* value
+	) override;
+
+	HRESULT STDMETHODCALLTYPE get_IsTrial(
+		boolean* value
+	) override;
+
+	HRESULT STDMETHODCALLTYPE get_ExpirationDate(
+		ABI::Windows::Foundation::DateTime* value
+	) override;
+
+	HRESULT STDMETHODCALLTYPE add_LicenseChanged(
+		ABI::Windows::ApplicationModel::Store::ILicenseChangedEventHandler* handler,
+		EventRegistrationToken* cookie
+	) override;
+
+	HRESULT STDMETHODCALLTYPE remove_LicenseChanged(
+		EventRegistrationToken cookie
+	) override;
+
+private:
+	long m_RefCount = 1;
+	ABI::Windows::ApplicationModel::Store::ILicenseInformation* m_realLicenseInformation;
+};
+
 class CurrentAppWrapperX : ICurrentAppX
 {
 public:

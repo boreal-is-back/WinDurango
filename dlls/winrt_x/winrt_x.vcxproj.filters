@@ -440,6 +440,12 @@
     <ClCompile Include="Implementation\Windows.Xbox.ApplicationModel.Store.ProductPurchasedEventArgs.cpp" />
     <ClCompile Include="ConnectedStorage\ConnectedStorage.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Implementation\Windows.Xbox.UI.Accessibility.cpp" />
+    <ClCompile Include="Implementation\Windows.Xbox.UI.AccountPickerResult.cpp" />
+    <ClCompile Include="Implementation\Windows.Xbox.UI.AddRemoveFriendResult.cpp" />
+    <ClCompile Include="Implementation\Windows.Xbox.UI.KeyboardOptions.cpp" />
+    <ClCompile Include="Implementation\Windows.Xbox.UI.SystemUI.cpp" />
+    <ClCompile Include="Implementation\Windows.Xbox.UI.WebAuthenticationResult.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -864,6 +870,12 @@
     </ClInclude>
     <ClInclude Include="Implementation\Windows.Xbox.ApplicationModel.Store.ProductPurchasedEventArgs.h" />
     <ClInclude Include="ConnectedStorage\ConnectedStorage.h" />
+    <ClInclude Include="Implementation\Windows.Xbox.UI.Accessibility.h" />
+    <ClInclude Include="Implementation\Windows.Xbox.UI.AccountPickerResult.h" />
+    <ClInclude Include="Implementation\Windows.Xbox.UI.AddRemoveFriendResult.h" />
+    <ClInclude Include="Implementation\Windows.Xbox.UI.KeyboardOptions.h" />
+    <ClInclude Include="Implementation\Windows.Xbox.UI.SystemUI.h" />
+    <ClInclude Include="Implementation\Windows.Xbox.UI.WebAuthenticationResult.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -948,5 +960,6 @@
     <Midl Include="External\Microsoft.Xbox.Services.Tournaments.idl" />
     <Midl Include="External\Microsoft.Xbox.Services.UserStatistics.idl" />
     <Midl Include="External\Windows.Kinect.idl" />
+    <Midl Include="External\Windows.Xbox.UI.idl" />
   </ItemGroup>
 </Project>

@@ -4,6 +4,12 @@
 #include <windows.ui.core.h>
 #include "../kernelx/CoreWindowWrapperX.h"
 
+#define DXGI_SWAPCHAIN_FLAG_MASK DXGI_SWAP_CHAIN_FLAG_NONPREROTATED | DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH | DXGI_SWAP_CHAIN_FLAG_GDI_COMPATIBLE \
+		| DXGI_SWAP_CHAIN_FLAG_RESTRICTED_CONTENT | DXGI_SWAP_CHAIN_FLAG_RESTRICT_SHARED_RESOURCE_DRIVER | DXGI_SWAP_CHAIN_FLAG_DISPLAY_ONLY | DXGI_SWAP_CHAIN_FLAG_FRAME_LATENCY_WAITABLE_OBJECT \
+		| DXGI_SWAP_CHAIN_FLAG_FOREGROUND_LAYER | DXGI_SWAP_CHAIN_FLAG_FULLSCREEN_VIDEO | DXGI_SWAP_CHAIN_FLAG_YUV_VIDEO \
+		| DXGI_SWAP_CHAIN_FLAG_HW_PROTECTED | DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING \
+		| DXGI_SWAP_CHAIN_FLAG_RESTRICTED_TO_ALL_HOLOGRAPHIC_DISPLAYS 
+
 namespace d3d11x
 {
 
@@ -114,9 +120,28 @@ namespace d3d11x
 		return m_realFactory->CreateSwapChainForHwnd(reinterpret_cast<IUnknown*>(pDevice), hWnd, pDesc, pFullscreenDesc, pRestrictToOutput, ppSwapChain);
 	}
 
-	HRESULT __stdcall IDXGIFactoryWrapper::CreateSwapChainForCoreWindow(IGraphicsUnknown* pDevice, IUnknown* pWindow, const DXGI_SWAP_CHAIN_DESC1* pDesc, IDXGIOutput* pRestrictToOutput, IDXGISwapChain1_X** ppSwapChain)
+	HRESULT __stdcall IDXGIFactoryWrapper::CreateSwapChainForCoreWindow(IGraphicsUnknown* pDevice, IUnknown* pWindow, DXGI_SWAP_CHAIN_DESC1* pDesc, IDXGIOutput* pRestrictToOutput, IDXGISwapChain1_X** ppSwapChain)
 	{
 		IDXGISwapChain1* swap = nullptr;
+
+		pDesc->Flags &= DXGI_SWAPCHAIN_FLAG_MASK;
+
+		if (pWindow == nullptr)
+		{
+			ComPtr<ICoreWindowStatic> coreWindowStatic;
+			RoGetActivationFactory(Wrappers::HStringReference(RuntimeClass_Windows_UI_Core_CoreWindow).Get( ), IID_PPV_ARGS(&coreWindowStatic));
+
+			ComPtr<ICoreWindow> coreWindow;
+			coreWindowStatic->GetForCurrentThread(&coreWindow);
+
+			pWindow = coreWindow.Get( );
+
+			HRESULT hr = m_realFactory->CreateSwapChainForCoreWindow(reinterpret_cast<IUnknown*>(pDevice), pWindow, pDesc, pRestrictToOutput, &swap);
+
+			*ppSwapChain = new IDXGISwapChainWrapper(swap);
+			return hr;
+		}
+
 		HRESULT hr = m_realFactory->CreateSwapChainForCoreWindow(reinterpret_cast<IUnknown*>(pDevice), reinterpret_cast<CoreWindowWrapperX*>(pWindow)->m_realWindow, pDesc, pRestrictToOutput, &swap);
 
 		*ppSwapChain = new IDXGISwapChainWrapper(swap);

@@ -46,10 +46,13 @@ HANDLE(WINAPI* TrueFindFirstFileW)(LPCWSTR lpFileName, LPWIN32_FIND_DATAW lpFind
 BOOL(WINAPI* TrueDeleteFileW)(LPCWSTR lpFileName) = DeleteFileW;
 
 HMODULE(WINAPI* TrueLoadLibraryExW)(LPCWSTR lpLibFileName, HANDLE  hFile, DWORD dwFlags) = LoadLibraryExW;
+HRESULT(STDMETHODCALLTYPE* TrueGetLicenseInformation)(
+	ABI::Windows::ApplicationModel::Store::ILicenseInformation** value
+) = nullptr;
 
-HMODULE WINAPI LoadLibraryExW_Hook(LPCWSTR lpLibFileName, HANDLE  hFile, DWORD   dwFlags)
+HMODULE WINAPI LoadLibraryExW_X(LPCWSTR lpLibFileName, HANDLE  hFile, DWORD   dwFlags)
 {
-
+	printf("LoadLibraryExW_X: %S\n", lpLibFileName);
 	if (wcscmp(lpLibFileName, L"xaudio2_9.dll") == 0 ||
 		wcscmp(lpLibFileName, L"xaudio2_9d.dll") == 0)
 	{
@@ -75,12 +78,12 @@ HMODULE WINAPI LoadLibraryExW_Hook(LPCWSTR lpLibFileName, HANDLE  hFile, DWORD  
 			!(wcscmp(callerfileName, L"xaudio2_9_x.dll") == 0))
 		{
 			LPCWSTR proxyXAudioModule = L"xaudio2_9_x.dll";
-			return TrueLoadLibraryExW(proxyXAudioModule, hFile, dwFlags);
+			return LoadLibraryExW(proxyXAudioModule, hFile, dwFlags);
 		}
 	}
 
 
-	return TrueLoadLibraryExW(lpLibFileName, hFile, dwFlags);
+	return LoadLibraryExW(lpLibFileName, hFile, dwFlags);
 }
 
 
@@ -173,10 +176,26 @@ inline T get_method(void* table_base, std::uintptr_t index) {
 	return (T)((*reinterpret_cast<std::uintptr_t**>(table_base))[index]);
 }
 
+HRESULT STDMETHODCALLTYPE GetLicenseInformation_Hook(
+	ABI::Windows::ApplicationModel::Store::ILicenseInformation** value
+)
+{
+	HRESULT hr = TrueGetLicenseInformation(value);
+	if (FAILED(hr))
+		return hr;
+	*value = reinterpret_cast<Store::ILicenseInformation*>(new LicenseInformationWrapperX(*value));
+	return hr;
+}
+
 HRESULT STDMETHODCALLTYPE CurrentAppActivateInstance_Hook(IActivationFactory* thisptr, IInspectable** instance)
 {
 	HRESULT hr = TrueActivateInstance(thisptr, instance);
-	*instance = reinterpret_cast<IInspectable*>(new CurrentAppWrapperX(reinterpret_cast<Store::ICurrentApp*>(*instance)));
+	TrueGetLicenseInformation = get_method<decltype(TrueGetLicenseInformation)>(*instance, 10);
+	DetourTransactionBegin();
+	DetourUpdateThread(GetCurrentThread());
+	DetourAttach(&TrueGetLicenseInformation, GetLicenseInformation_Hook);
+	DetourTransactionCommit();
+
 	return hr;
 }
 
@@ -188,22 +207,6 @@ inline HRESULT WINAPI RoGetActivationFactory_Hook(HSTRING classId, REFIID iid, v
 
 	//wprintf(L"%ls\n", rawString);
 	auto hr = 0;
-
-	if (IsClassName(classId, "Windows.ApplicationModel.Store.CurrentApp"))
-	{
-		hr = TrueRoGetActivationFactory(classId, iid, factory);
-		if (FAILED(hr))
-			return hr;
-
-		//TrueActivateInstance = get_method<decltype(TrueActivateInstance)>(*factory, 6);
-
-		//DetourTransactionBegin();
-		//DetourUpdateThread(GetCurrentThread());
-		//DetourAttach(&TrueActivateInstance, CurrentAppActivateInstance_Hook);
-		//DetourTransactionCommit();
-
-		return hr;
-	}
 
 	if (IsClassName(classId, "Windows.ApplicationModel.Core.CoreApplication"))
 	{
@@ -270,6 +273,4 @@ inline HRESULT WINAPI RoGetActivationFactory_Hook(HSTRING classId, REFIID iid, v
 		return fallbackFactory.CopyTo(iid, factory);
 
 	return TrueRoGetActivationFactory(classId, iid, factory);
-
-	return hr;
 }

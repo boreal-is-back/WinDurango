@@ -2,7 +2,7 @@ LIBRARY kernelx
 EXPORTS
 	XMemAlloc				            = XMemAlloc_X					                    @504
 	XMemAllocDefault		            = XMemAllocDefault_X			                    @505
-	EventRegister                       = NTDLL.EventRegister                               @95
+	EventRegister                       = Advapi32.EventRegister                               @95
 	XMemFree                            = XMemFree_X                                        @507
 	XMemFreeDefault                     = XMemFreeDefault_X                                 @508
 	XMemSetAllocationHooks		    = XMemSetAllocationHooks_X				@514
@@ -98,15 +98,15 @@ EXPORTS
 	EnumSystemLocalesA                  = Kernel32.EnumSystemLocalesA                       @89
 	EnumSystemLocalesEx                 = Kernel32.EnumSystemLocalesEx                      @90
 	EnumSystemLocalesW                  = Kernel32.EnumSystemLocalesW                       @91
-	EventActivityIdControl              = Kernel32.EventActivityIdControl                   @92
-	EventEnabled                        = Kernel32.EventEnabled                             @93
-	EventProviderEnabled                = Kernel32.EventProviderEnabled                     @94
-	EventSetInformation                 = Kernel32.EventSetInformation                      @96
-	EventUnregister                     = Kernel32.EventUnregister                          @97
-	EventWrite                          = Kernel32.EventWrite                               @98
-	EventWriteEx                        = Kernel32.EventWriteEx                             @99
-	EventWriteString                    = Kernel32.EventWriteString                         @100
-	EventWriteTransfer                  = Kernel32.EventWriteTransfer                       @101
+	EventActivityIdControl              = Advapi32.EventActivityIdControl                   @92
+	EventEnabled                        = Advapi32.EventEnabled                             @93
+	EventProviderEnabled                = Advapi32.EventProviderEnabled                     @94
+	EventSetInformation                 = Advapi32.EventSetInformation                      @96
+	EventUnregister                     = Advapi32.EventUnregister                          @97
+	EventWrite                          = Advapi32.EventWrite                               @98
+	EventWriteEx                        = Advapi32.EventWriteEx                             @99
+	EventWriteString                    = Advapi32.EventWriteString                         @100
+	EventWriteTransfer                  = Advapi32.EventWriteTransfer                       @101
 	ExitProcess                         = Kernel32.ExitProcess                              @102
 	ExitThread                          = Kernel32.ExitThread                               @103
 	ExpandEnvironmentStringsW           = Kernel32.ExpandEnvironmentStringsW                @104
@@ -300,7 +300,7 @@ EXPORTS
 	LeaveCriticalSection                = Kernel32.LeaveCriticalSection                     @293
 	LeaveCriticalSectionWhenCallbackReturns = Kernel32.LeaveCriticalSectionWhenCallbackReturns  @294
 	LoadLibraryExA                      = Kernel32.LoadLibraryExA                           @295
-	LoadLibraryExW                      = Kernel32.LoadLibraryExW                           @296
+	LoadLibraryExW                      = LoadLibraryExW_X                           @296
 	LoadLibraryW                        = Kernel32.LoadLibraryW                             @297
 	LoadPackagedLibrary                 = Kernel32.LoadPackagedLibrary                      @298
 	LoadResource                        = Kernel32.LoadResource                             @299

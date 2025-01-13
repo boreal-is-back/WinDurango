@@ -73,6 +73,9 @@ HRESULT d3d11x::D3D11DeviceXWrapperX::CreateTexture2D(
     ID3D11Texture2D* texture2d = nullptr;
 	pDesc->MiscFlags &= TEXTURE_MISCFLAGS_MASK; // remove all flags that are xbox-one only flags
 
+    if (pDesc->Usage == D3D11_USAGE_DYNAMIC)
+		pDesc->CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
     HRESULT hr = m_realDevice->CreateTexture2D(pDesc, pInitialData, &texture2d);
 
     printf("[CreateTexture2D] created texture at 0x%llX\n", texture2d);
@@ -462,6 +465,8 @@ HRESULT d3d11x::D3D11DeviceXWrapperX::SetGpuMemoryPriority(
 void d3d11x::D3D11DeviceXWrapperX::GetGpuHardwareConfiguration(
     _Out_ d3d11x::D3D11X_GPU_HARDWARE_CONFIGURATION* pGpuHardwareConfiguration)
 {
-    printf("[D3D11DeviceXWrapperX] GetGpuHardwareConfiguration");
+    static d3d11x::D3D11X_GPU_HARDWARE_CONFIGURATION dummyHardwareConfig = { 0, D3D11X_HARDWARE_VERSION_XBOX_ONE, 0 };
+    printf("[D3D11DeviceXWrapperX] GetGpuHardwareConfiguration\n");
+	*pGpuHardwareConfiguration = dummyHardwareConfig;
 }
 #pragma endregion

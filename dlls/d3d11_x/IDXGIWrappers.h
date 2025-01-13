@@ -64,7 +64,7 @@ namespace d3d11x
         HRESULT STDMETHODCALLTYPE CreateSwapChainForCoreWindow(
             IGraphicsUnknown* pDevice,
             IUnknown* pWindow,
-            const DXGI_SWAP_CHAIN_DESC1* pDesc,
+            DXGI_SWAP_CHAIN_DESC1* pDesc,
             IDXGIOutput* pRestrictToOutput,
             IDXGISwapChain1_X** ppSwapChain) override;
 
