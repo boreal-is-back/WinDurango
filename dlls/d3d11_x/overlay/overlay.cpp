@@ -24,6 +24,8 @@ WinDurango::Overlay::~Overlay()
 // This should be called when Run is called by the game inside the wrapper.
 void WinDurango::Overlay::Initialize()
 {
+	g_KeyboardFinished = CreateEventA(NULL, FALSE, FALSE, "KeyboardFinished");
+
 	ID3D11Texture2D* pBackBuffer;
 
 	m_pSwapchain->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer));
@@ -50,21 +52,158 @@ void WinDurango::Overlay::Shutdown()
 	ImGui::DestroyContext( );
 }
 
-void WinDurango::Overlay::Present() const
+void WinDurango::Overlay::EnableKeyboard()
 {
-	//ImVec4 clear_color = ImVec4(255, 255, 255, 0);
-	ImGui_ImplDX11_NewFrame( );
-	ImGui_ImplUwp_NewFrame( );
-	ImGui::NewFrame( );
+	m_bKeyboard = true;
+}
 
-	ImGui::ShowDemoWindow();
-	ImGui::Render( );
+void WinDurango::Overlay::Present( )
+{
+    ImGui_ImplDX11_NewFrame( );
+    ImGui_ImplUwp_NewFrame( );
+    ImGui::NewFrame( );
 
-	//const float clear_color_with_alpha[ 4 ] = { clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w };
+    if (m_bKeyboard)
+    {
+        ImGui::SetNextWindowSize(ImVec2(500, 300));
+        ImGui::Begin("WinDurango Keyboard Input", &m_bKeyboard, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse);
 
-	m_pContext->OMSetRenderTargets(1, &m_pRenderTargetView, nullptr);
-	//m_pContext->ClearRenderTargetView(m_pRenderTargetView, clear_color_with_alpha);
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData( ));
+        //static bool isUppercase = false;
+        //static bool isSymbols = false;
 
-	//m_pSwapchain->Present(1, 0);
+        //const char* keys[] = {
+        //    "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=",
+        //    "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]",
+        //    "A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "'",
+        //    "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/"
+        //};
+
+        //const char* symbols[] = {
+        //    "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+",
+        //    "~", "`", "|", "\\", "{", "}", "[", "]", ":", ";", "\"", "'",
+        //    "<", ">", "?", "/", ",", ".", "=", "-"
+        //};
+
+        ImGui::InputText("Buffer", g_KeyboardText, IM_ARRAYSIZE(g_KeyboardText));
+
+        //if (ImGui::Button(isUppercase ? "Lowercase" : "Uppercase"))
+        //{
+        //    isUppercase = !isUppercase;
+        //}
+        //ImGui::SameLine();
+        //if (ImGui::Button(isSymbols ? "Letters" : "Symbols"))
+        //{
+        //    isSymbols = !isSymbols;
+        //}
+        //ImGui::NewLine();
+
+        //const char** currentKeys = isSymbols ? symbols : keys;
+        ImVec2 buttonSize = ImVec2(30, 30); // Set a fixed size for all buttons
+
+        //for (int i = 0; i < 12; ++i)
+        //{
+        //    if (ImGui::Button(currentKeys[i], buttonSize))
+        //    {
+        //        size_t len = strlen(g_KeyboardText);
+        //        if (len < 255)
+        //        {
+        //            g_KeyboardText[len] = isUppercase ? currentKeys[i][0] : tolower(currentKeys[i][0]);
+        //            g_KeyboardText[len + 1] = '\0';
+        //        }
+        //    }
+        //    ImGui::SameLine();
+        //}
+        //ImGui::NewLine();
+
+        //for (int i = 12; i < 24; ++i)
+        //{
+        //    if (ImGui::Button(currentKeys[i], buttonSize))
+        //    {
+        //        size_t len = strlen(g_KeyboardText);
+        //        if (len < 255)
+        //        {
+        //            g_KeyboardText[len] = isUppercase ? currentKeys[i][0] : tolower(currentKeys[i][0]);
+        //            g_KeyboardText[len + 1] = '\0';
+        //        }
+        //    }
+        //    ImGui::SameLine();
+        //}
+        //ImGui::NewLine();
+
+        //if (!isSymbols)
+        //{
+        //    for (int i = 24; i < 35; ++i)
+        //    {
+        //        if (ImGui::Button(currentKeys[ i ], buttonSize))
+        //        {
+        //            size_t len = strlen(g_KeyboardText);
+        //            if (len < 255)
+        //            {
+        //                g_KeyboardText[ len ] = isUppercase ? currentKeys[ i ][ 0 ] : tolower(currentKeys[ i ][ 0 ]);
+        //                g_KeyboardText[ len + 1 ] = '\0';
+        //            }
+        //        }
+        //        ImGui::SameLine( );
+        //    }
+        //}
+        //else
+        //{
+        //    for (int i = 24; i < 32; ++i)
+        //    {
+        //        if (ImGui::Button(currentKeys[ i ], buttonSize))
+        //        {
+        //            size_t len = strlen(g_KeyboardText);
+        //            if (len < 255)
+        //            {
+        //                g_KeyboardText[ len ] = isUppercase ? currentKeys[ i ][ 0 ] : tolower(currentKeys[ i ][ 0 ]);
+        //                g_KeyboardText[ len + 1 ] = '\0';
+        //            }
+        //        }
+        //        ImGui::SameLine( );
+        //    }
+        //}
+
+        //ImGui::NewLine();
+
+        //if (!isSymbols)
+        //{
+        //    for (int i = 35; i < 44; ++i)
+        //    {
+        //        if (ImGui::Button(currentKeys[ i ], buttonSize))
+        //        {
+        //            size_t len = strlen(g_KeyboardText);
+        //            if (len < 255)
+        //            {
+        //                g_KeyboardText[ len ] = isUppercase ? currentKeys[ i ][ 0 ] : tolower(currentKeys[ i ][ 0 ]);
+        //                g_KeyboardText[ len + 1 ] = '\0';
+        //            }
+        //        }
+        //        ImGui::SameLine( );
+        //    }
+        //}
+
+        //ImGui::NewLine();
+
+        if (ImGui::Button("OK", buttonSize) || ImGui::IsKeyPressed(ImGuiKey_GamepadStart))
+        {
+            m_bKeyboard = false;
+            SetEvent(g_KeyboardFinished);
+        }
+
+        //if (ImGui::IsKeyPressed(ImGuiKey_GamepadBack))
+        //{
+        //    size_t len = strlen(g_KeyboardText);
+        //    if (len > 0)
+        //    {
+        //        g_KeyboardText[len - 1] = '\0';
+        //    }
+        //}
+
+        ImGui::End();
+    }
+
+    ImGui::Render();
+
+    m_pContext->OMSetRenderTargets(1, &m_pRenderTargetView, nullptr);
+    ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }

@@ -16,3 +16,5 @@ EXPORTS
 	DXGIXPresentArray							=	DXGIXPresentArray_X											@14
 	DXGIXSetFrameNotification					=	DXGIXSetFrameNotification_X									@15
 	DXGIXSetVLineNotification					=	DXGIXSetVLineNotification_X									@16
+	WD11XNotify									=   WD11XNotify_X												@17
+	WDWaitForKeyboard						    =   WDWaitForKeyboard											@18

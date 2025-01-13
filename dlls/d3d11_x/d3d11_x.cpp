@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include <cstdio>
+#include <mutex>
 
 #include "d3d_x/d3d_x.hpp"
 #include "ID3DWrappers.h"
@@ -248,4 +249,33 @@ HRESULT __stdcall D3D11CreateDeviceAndSwapChain_X(
     printf("!!! Game is trying to initialize D3D11 through NORMAL D3D11 !!!");
     printf("SDK Version: %d\n", SDKVersion);
     return D3D11CreateDeviceAndSwapChain(pAdapter, DriverType, Software, Flags, pFeatureLevels, FeatureLevels, SDKVersion, pSwapChainDesc, ppSwapChain, ppDevice, pFeatureLevel, ppImmediateContext);
+}
+
+std::mutex g_NotifyMutex;
+
+// this function exists for other WinDurango dlls to notify the graphics component of an action
+// for right now, this is used for signaling when a keyboard is requested by a game and rendering it using ImGUI
+void WD11XNotify_X(WDEVENT_TYPE event)
+{
+    const std::lock_guard lock(g_NotifyMutex);
+	printf("[d3d11_x] received notification\n");
+
+    switch (event)
+    {
+	case WDEVENT_TYPE_INVALID:
+		throw std::exception("this shouldn't happen, check code that sends events.");
+	case WDEVENT_TYPE_KEYBOARD_ENGAGE:
+		printf("[d3d11_x] keyboard engage\n");
+		WinDurango::g_Overlay->EnableKeyboard( );
+		break;
+    }
+}
+
+void WDWaitForKeyboard(const char** outText)
+{
+	printf("[d3d11_x] waiting for keyboard\n");
+
+    WaitForSingleObject(WinDurango::g_KeyboardFinished, INFINITE);
+
+	*outText = WinDurango::g_KeyboardText;
 }

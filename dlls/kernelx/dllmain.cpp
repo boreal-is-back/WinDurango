@@ -5,7 +5,7 @@
 #include <Windows.h>
 
 // note from unixian: i used this since using appxlauncher requires me attaching to the game after it launches
-#define WINDURANGO_WAIT_FOR_DEBUGGER 1
+#define WINDURANGO_WAIT_FOR_DEBUGGER 0
 
 //Rodrigo Todescatto: For debbuging Forza.
 #define RETURN_IF_FAILED(hr) if (FAILED(hr)) return hr

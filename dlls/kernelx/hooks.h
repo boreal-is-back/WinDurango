@@ -162,40 +162,24 @@ HRESULT STDMETHODCALLTYPE GetForCurrentThread_Hook(ICoreWindowStatic* pThis, Cor
 	if (*ppWindow == NULL)
 		return hr;
 
-
-
 	if (IsXboxCallee())
 		*reinterpret_cast<ICoreWindowX**>(ppWindow) = new CoreWindowWrapperX(*ppWindow);
-
 
 	return hr;
 }
 
 template <typename T>
-inline T get_method(void* table_base, std::uintptr_t index) {
+inline T GetVTableMethod(void* table_base, std::uintptr_t index) {
 	return (T)((*reinterpret_cast<std::uintptr_t**>(table_base))[index]);
-}
-
-HRESULT STDMETHODCALLTYPE GetLicenseInformation_Hook(
-	ABI::Windows::ApplicationModel::Store::ILicenseInformation** value
-)
-{
-	HRESULT hr = TrueGetLicenseInformation(value);
-	if (FAILED(hr))
-		return hr;
-	*value = reinterpret_cast<Store::ILicenseInformation*>(new LicenseInformationWrapperX(*value));
-	return hr;
 }
 
 HRESULT STDMETHODCALLTYPE CurrentAppActivateInstance_Hook(IActivationFactory* thisptr, IInspectable** instance)
 {
 	HRESULT hr = TrueActivateInstance(thisptr, instance);
-	TrueGetLicenseInformation = get_method<decltype(TrueGetLicenseInformation)>(*instance, 10);
-	DetourTransactionBegin();
-	DetourUpdateThread(GetCurrentThread());
-	DetourAttach(&TrueGetLicenseInformation, GetLicenseInformation_Hook);
-	DetourTransactionCommit();
+	if (FAILED(hr))
+		return hr;
 
+	*instance = reinterpret_cast<Store::ILicenseInformation*>(new LicenseInformationWrapperX(reinterpret_cast<Store::ILicenseInformation*>(*instance)));
 	return hr;
 }
 
@@ -207,6 +191,22 @@ inline HRESULT WINAPI RoGetActivationFactory_Hook(HSTRING classId, REFIID iid, v
 
 	//wprintf(L"%ls\n", rawString);
 	auto hr = 0;
+
+	if (IsClassName(classId, "Windows.ApplicationModel.Store.CurrentApp"))
+	{
+		hr = TrueRoGetActivationFactory(classId, iid, factory);
+
+		if (FAILED(hr))
+			return hr;
+
+		// @unixian: is there a better way to do this? it works, but we never know if the vtable will change (microsoft please don't make breaking ABI changes)
+		TrueActivateInstance = GetVTableMethod<decltype(TrueActivateInstance)>(*factory, 6);
+
+		DetourTransactionBegin();
+		DetourUpdateThread(GetCurrentThread());
+		DetourAttach(&TrueActivateInstance, CurrentAppActivateInstance_Hook);
+		DetourTransactionCommit();
+	}
 
 	if (IsClassName(classId, "Windows.ApplicationModel.Core.CoreApplication"))
 	{
@@ -274,3 +274,4 @@ inline HRESULT WINAPI RoGetActivationFactory_Hook(HSTRING classId, REFIID iid, v
 
 	return TrueRoGetActivationFactory(classId, iid, factory);
 }
+

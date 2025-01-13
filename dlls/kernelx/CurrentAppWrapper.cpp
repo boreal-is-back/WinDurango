@@ -72,7 +72,8 @@ HRESULT LicenseInformationWrapperX::get_IsActive(boolean* value)
 HRESULT LicenseInformationWrapperX::get_IsTrial(boolean* value)
 {
 	printf("[LicenseInformationWrapperX] get_IsTrial\n");
-	return E_NOTIMPL;
+	*value = false;
+	return S_OK;
 }
 
 HRESULT LicenseInformationWrapperX::get_ExpirationDate(ABI::Windows::Foundation::DateTime* value)
@@ -84,8 +85,13 @@ HRESULT LicenseInformationWrapperX::get_ExpirationDate(ABI::Windows::Foundation:
 HRESULT LicenseInformationWrapperX::add_LicenseChanged(
 	ABI::Windows::ApplicationModel::Store::ILicenseChangedEventHandler* handler, EventRegistrationToken* cookie)
 {
+	HRESULT hr = m_realLicenseInformation->add_LicenseChanged(handler, cookie);
 	printf("[LicenseInformationWrapperX] add_LicenseChanged\n");
-	return E_NOTIMPL;
+
+	if (SUCCEEDED(hr))
+		handler->Invoke();
+
+	return hr;
 }
 
 HRESULT LicenseInformationWrapperX::remove_LicenseChanged(EventRegistrationToken cookie)
