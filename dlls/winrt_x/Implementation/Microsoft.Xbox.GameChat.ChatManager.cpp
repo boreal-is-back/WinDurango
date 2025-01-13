@@ -137,7 +137,7 @@ namespace winrt::Microsoft::Xbox::GameChat::implementation
     }
     winrt::Windows::Foundation::Collections::IVectorView<winrt::Microsoft::Xbox::GameChat::ChatUser> ChatManager::GetChatUsers()
     {
-        throw hresult_not_implemented();
+		return winrt::single_threaded_vector<winrt::Microsoft::Xbox::GameChat::ChatUser>( ).GetView();
     }
     void ChatManager::MuteUserFromAllChannels(winrt::Microsoft::Xbox::GameChat::ChatUser const& user)
     {

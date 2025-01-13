@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Windows.Xbox.UI.SystemUI.h"
-
+#include <iostream>
 #include "Windows.Xbox.UI.AccountPickerResult.h"
 #include "Windows.Xbox.UI.SystemUI.g.cpp"
 
@@ -38,7 +38,7 @@ namespace winrt::Windows::Xbox::UI::implementation
     }
     winrt::Windows::Foundation::IAsyncAction SystemUI::ShowProfileCardAsync(winrt::Windows::Xbox::System::IUser requestingUser, hstring targetXuid)
     {
-        throw hresult_not_implemented();
+        co_return;
     }
     winrt::Windows::Foundation::IAsyncAction SystemUI::ShowSendInvitesAsync(winrt::Windows::Xbox::System::IUser requestingUser)
     {
