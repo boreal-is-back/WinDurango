@@ -59,9 +59,6 @@ namespace winrt::Windows::Xbox::Storage::implementation
     }
     winrt::Windows::Xbox::Storage::BlobInfoQueryResult ConnectedStorageContainer::CreateBlobInfoQuery(hstring const& blobNamePrefix)
     {
-        // due to that hstring is just empty it throws errors later so I've done it this way if you know how to do it properly go ahead and do it
-        if(blobNamePrefix.empty() || blobNamePrefix.data() == nullptr)
-            return winrt::make<winrt::Windows::Xbox::Storage::implementation::BlobInfoQueryResult>(Name( ), L"prefixIsEmpty");
         return winrt::make<winrt::Windows::Xbox::Storage::implementation::BlobInfoQueryResult>(Name(), blobNamePrefix);
     }
 }
